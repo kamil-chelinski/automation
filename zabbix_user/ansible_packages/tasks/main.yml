@@ -1,0 +1,12 @@
+---
+# tasks file for roles/ansible_packages
+- name: Install paramiko pip package
+  pip:
+    name: paramiko
+    state: latest
+  when: inventory_hostname == "ansible"
+- name: Install passlib
+  pip:
+    name: passlib
+    state: latest
+  when: inventory_hostname == "ansible"

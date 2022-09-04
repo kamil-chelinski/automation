@@ -1,0 +1,18 @@
+---
+# tasks file for roles/mikrotik_backup
+- name: Make a backup
+  routeros_command:
+    commands: /export
+  register: backup
+- name: create a backup file
+  file:
+    path: /tmp/{{ inventory_hostname }}-backup.txt
+    state: touch
+    mode: 0644
+  tags: mikrotik_backup
+- name: "saving registered informations in file"
+  shell: "echo {{ backup.stdout}} > '/tmp/{{ inventory_hostname }}-backup.txt'"
+  tags: mikrotik_backup
+- name: Send backup to NAS
+  become: yes
+  shell: "scp /tmp/MT* kamil@qnap-ht:/share/CACHEDEV1_DATA/Backups/Mikrotik/"

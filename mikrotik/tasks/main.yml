@@ -1,0 +1,8 @@
+---
+# tasks file for mikrotik
+- import_tasks: file_creation.yaml
+- import_tasks: radius.yaml
+- import_tasks: l3_info_check.yaml
+- import_tasks: capsman_info_check.yaml
+- import_tasks: capsman_configuration.yaml
+

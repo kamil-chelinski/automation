@@ -1,0 +1,13 @@
+---
+# tasks file for roles/linux_l3
+- name: ICMP ping
+  ansible.builtin.ping:
+  register: icmp_ping
+  tags: icmp_linux
+- name: Check ip
+  shell: "{{ ifconfig }}"
+  register: ip_check
+  #when: icmp_ping.result is suceceeded
+- debug:
+    var: ip_check.stdout
+  tags: ip_check

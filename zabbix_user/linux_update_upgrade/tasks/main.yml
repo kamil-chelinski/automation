@@ -1,0 +1,16 @@
+---
+# tasks file for roles/linux_update_upgrade
+- name: "TASK 2 - Update apt packages"
+  ansible.builtin.apt:
+    cache_valid_time: 3600
+    update_cache: yes
+    force_apt_get: yes
+    force: yes
+  tags: linux_update
+- name: "TASK 3 - Upgrade apt packages"
+  #ansible.builtin.apt:
+  # cache_valid_time: 3600
+  # upgrade: yes
+  # force_apt_get: yes
+  shell: sudo apt-get upgrade -y
+  tags: linux_upgrade

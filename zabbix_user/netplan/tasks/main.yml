@@ -1,0 +1,5 @@
+---
+# tasks file for roles/netplan
+- name: Apply netplan changes
+  shell: netplan apply
+  tags: netplan_apply

@@ -1,0 +1,36 @@
+- name: Configure Security profile
+  routeros_command:
+    commands:
+      - /caps-man/security/add authentication-types=wpa2-psk encryption=aes-ccm group-encryption=aes-ccm name=HT-5G
+      - /caps-man/security/add authentication-types=wpa2-psk encryption=aes-ccm group-encryption=aes-ccm name=IoT
+- name: Configure Channels
+  routeros_command:
+    commands:
+      - /caps-man/channel/add band=2ghz-b/g/n extension-channel=eC frequency=2447 name=IoT-2G
+      - /caps-man/channel/add band=5ghz-onlyac extension-channel=eeCe frequency=5220 name=5G
+- name: Configure Datapath
+  routeros_command:
+    commands:
+      - /caps-man/datapath/add bridge=HT-Bridge client-to-client-forwarding=yes name=5GHZ    
+      - /caps-man/datapath/add bridge=IoT-Bridge name=2GHZ
+- name: Configure access-list
+  routeros_command:
+    commands:
+      - /caps-man/access-list/add action=accept allow-signal-out-of-range=10s disabled=no interface=any signal-range=-80..80 ssid-regexp=""
+      - /caps-man/access-list/add action=reject allow-signal-out-of-range=10s disabled=no interface=any signal-range=81..120 ssid-regexp=""
+      - /caps-man/access-list/add action=reject allow-signal-out-of-range=10s disabled=no interface=any signal-range=-120..-81 ssid-regexp=""
+- name: Configure Configuration tab
+  routeros_command:
+    commands:
+      - /caps-man/configuration/add channel=5G country=poland installation=indoor datapath=5GHZ mode=ap name=5GHZ rx-chains=0,1,2,3 tx-chains=0,1,2,3 security=HT-5G ssid=HT-5G 
+      - /caps-man/configuration/add channel=2G country=poland installation=indoor datapath=2GHZ mode=ap name=2GHZ rx-chains=0,1,2,3 tx-chains=0,1,2,3 security=IoT ssid=IoT
+- name: Configure Provisioning
+  routeros_command:
+    commands:
+      - /caps-man/provisioning/add action=create-dynamic-enabled comment="Provisioning for 2G" hw-supported-modes=gn master-configuration=2GHZ name-format=identity
+      - /caps-man/provisioning/add action=create-dynamic-enabled comment="Provisioning for 5G" hw-supported-modes=ac master-configuration=5GHZ name-format=identity name-prefix=5G
+- name: Configure Caps-man manager
+  routeros_command:
+    commands:
+      - /caps-man/manager/set ca-certifiacte=auto certificate=auto enabled=yes
+      - /caps-man/manager/interface/add interface=MT1-IoT disabled=no forbid=yes interface=ether1

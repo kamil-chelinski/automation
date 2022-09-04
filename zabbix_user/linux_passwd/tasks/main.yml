@@ -1,0 +1,8 @@
+---
+# tasks file for roles/linux_passwd
+- name: Change user password
+  user:
+    name: "{{ myuser }}"
+    update_password: always
+    password: "{{ mypassword | password_hash('sha512') }}"
+  tags: linux_passwd

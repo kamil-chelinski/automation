@@ -1,0 +1,4 @@
+---
+- name: Reboot linux servers instead of Ansible
+  shell: reboot
+  tags: linux_reboot

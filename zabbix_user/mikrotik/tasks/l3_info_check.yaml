@@ -1,0 +1,35 @@
+- name: Verify routing table
+  routeros_command:
+    commands:
+      - /ip/route/print
+  tags: rib
+  register: rib_info
+- name: print rib info
+  debug: 
+     var: rib_info
+  tags: rib
+- name: Verify ethernet interfaces
+  routeros_command:
+    commands:
+      - /interface/ethernet/print
+  tags: ethernet
+  register: eth_info
+- name: print ETH info
+  debug: 
+     var: eth_info
+  tags: ethernet
+- name: Verify configured ip addresses
+  routeros_command:
+    commands:
+      - /ip/address/print
+  tags: ip_info
+- name: Verify arp table
+  routeros_command:
+    commands:
+      - ip arp print without-paging
+  tags: arp
+  register: arp_info
+- name: print arp info
+  debug: 
+     var: arp_info
+  tags: arp

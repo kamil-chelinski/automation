@@ -1,0 +1,3 @@
+---
+# vars file for roles/linux_l3
+ifconfig: "ip a | grep global"

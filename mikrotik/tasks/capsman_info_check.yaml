@@ -1,0 +1,20 @@
+- name: Verify connected remote caps
+  routeros_command:
+    commands:
+      - /caps-man/remote-cap/print
+  tags: caps_cap_info
+  register: caps_cap_info
+- name: print cap info
+  debug: 
+     var: caps_cap_info
+  tags: caps_cap_info
+- name: Verify connected radios
+  routeros_command:
+    commands:
+      - /caps-man/radio/print
+  tags: caps_radio_info
+  register: caps_radio_info
+- name: print radio info
+  debug: 
+     var: caps_radio_info
+  tags: caps_radio_info

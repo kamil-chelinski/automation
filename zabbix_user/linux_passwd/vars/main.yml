@@ -1,0 +1,4 @@
+---
+# vars file for roles/linux_passwd
+myuser: kamil
+mypassword: K@milubuntu12#

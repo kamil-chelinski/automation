@@ -1,0 +1,24 @@
+---
+# tasks file for juniper_switches
+- name: Get Device Facts
+  tasks:
+    - name: Retrieve facts from device running Junos OS
+      juniper.device.facts:
+        savedir: "{{ playbook_dir }}"
+    - name: Print version
+      debug:
+        var: junos.version
+- name: Show version
+  junipernetworks.junos.junos_command:
+    commands: show version
+  register: version
+- name: Print version of OS
+  debug:
+    var: version
+- name: show interfaces brief status
+  junipernetworks.junos.junos_command:
+    commands: show interfaces terse
+  register: interfaces
+- name: Print interfaces status
+  debug:
+    var: interfaces

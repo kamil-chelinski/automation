@@ -1,0 +1,10 @@
+- name: configure users and radius authentication
+  routeros_command:
+    commands:
+     - /system/clock/set time-zone-name=Europe/Warsaw
+     - /system/ntp/client/set enabled=yes servers=172.17.25.1,8.8.8.8
+     - /radius/add address=172.17.25.33  secret=radius123 service=login timeout=00:00:30 protocol=udp disabled=no
+     - /radius/incoming/set accept=yes port=3799
+     - /ip service disable numbers=0,1,2,4,5,7
+     - /user aaa set use-radius=yes accounting=yes default-group=read
+     - /tool romon set enabled=yes

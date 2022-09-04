@@ -1,0 +1,48 @@
+---
+# tasks file for roles/zabbix_user
+- name: add user in OS
+  ansible.builtin.user:
+    name: zabbix
+    group: sudo
+    comment: "Zabbix monitoring tool user"
+    shell: /bin/null
+  tags: useradd
+- name: Check if file exists under sudoers.d directory
+  stat:
+    path: /etc/sudoers.d/zabbix
+  register: file_data 
+  tags: usrchk    
+- name: "Print msg when file exists and need to be deleted in next step"
+  debug:
+    msg: "File exists"
+  tags: usrchk    
+  when: file_data.stat.exists
+- name: "Delete old file"
+  file:
+    path: /etc/sudoers.d/zabbix
+    state: absent
+  tags: usrdel    
+  when: file_data.stat.exists
+- name: "Check again if file exists under sudoers.d directory"
+  stat:
+    path: /etc/sudoers.d/zabbix
+  register: file_data 
+  tags: usrchk    
+- name: "Print msg when file does not exists"
+  debug:
+    msg: "File does not exists. Will be created in next step"
+  tags: usrchk    
+  when: not file_data.stat.exists
+- name: "Add user to sudo"
+  lineinfile:
+    path: /etc/sudoers.d/zabbix
+    line: '{{item}}'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+  with_items:
+    - "zabbix   ALL=NOPASSWD: /usr/bin/touch"
+    - "zabbix   ALL=NOPASSWD: /usr/sbin/poweroff"
+    - "zabbix   ALL=NOPASSWD: /usr/sbin/reboot"
+  tags: usradd    

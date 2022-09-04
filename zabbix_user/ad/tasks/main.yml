@@ -1,0 +1,25 @@
+---
+# tasks file for roles/ad
+- name: "Install domain packages"
+  apt:
+    name:
+      - realmd
+      - sssd
+      - packagekit
+    state: latest
+  tags: domain_packages
+- name: "Add new group to sudoers.d catalog"
+  lineinfile:
+    path: /etc/sudoers.d/it
+    line: 'it   ALL=(ALL) ALL:ALL'
+    state: present
+    mode: 0440
+    create: yes
+    validate: "visudo -cf %s"
+  tags: domain_group
+- name: Join Linux servers to domain
+  expect: 
+    command: sudo realm join --user=Administrator@vigip.local vigip.local
+    responses:
+      Password for *: "{{ ad_pass }}"
+  tags: join_domain

@@ -1,0 +1,34 @@
+---
+# tasks file for roles/zabbix
+- name: Set Server value
+  ansible.builtin.replace:
+    path: /etc/zabbix/zabbix_agentd.conf
+    regexp: ^Server=127.0.0.1$
+    replace: Server=127.0.0.1,172.17.25.31
+  register: service_conf  
+  tags: zabbix_agent
+- name: Set ServerActive value
+  ansible.builtin.replace:
+    path: /etc/zabbix/zabbix_agentd.conf
+    regexp: ^ServerActive=127.0.0.1$
+    replace: ServerActive=127.0.0.1,172.17.25.31
+  register: service_conf  
+  tags: zabbix_agent
+- name: restart zabbix agent service
+  ansible.builtin.service:
+    name: zabbix-agent.service   
+    state: restarted
+  when: service_conf.changed
+  debugger: on_failed
+  tags: zabbix_agent
+- name: Enable Remote Commands in zabbix-server.conf file
+  ansible.builtin.lineinfile:
+    path: /etc/zabbix/zabbix_agentd.conf
+    regexp: '^EnableRemote'
+    line: 'EnableRemoteCommands=1'
+  tags: zabbix_remotecommands
+- name: restart zabbix agent service
+  ansible.builtin.service:
+    name: zabbix-agent.service   
+    state: restarted
+  tags: zabbix_agent_restart

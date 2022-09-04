@@ -1,0 +1,38 @@
+---
+- name: "Install vim"
+  apt:  
+    name: vim
+    state: latest
+- name: "Install tmux"
+  apt:  
+    name: tmux
+    state: latest
+- name: "Install zabbix-agent"
+  apt:  
+    name: zabbix-agent
+    state: latest
+- name: "Install htop"
+  apt:  
+    name: htop
+    state: latest
+- name: "Install net-tools"
+  apt:  
+    name: net-tools
+    state: latest
+- name: "Install curl"
+  apt:  
+    name: curl
+    state: latest
+- name: "Install mc"
+  apt:  
+    name: mc
+    state: latest
+- name: "Install tree"
+  apt:
+    name: tree
+    state: latest
+  tags: tree 
+- name: "Install mtr"
+  apt:
+    name: mtr
+    state: latest

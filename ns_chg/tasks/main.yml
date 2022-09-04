@@ -1,0 +1,12 @@
+---
+# tasks file for roles/ns_chg
+- name: Set nameservers
+  shell: sudo sed -i 's/{{item.From}}/{{item.To}}/g' /etc/netplan/00-installer-config.yaml
+  with_items: 
+    - { From: "172.17.25.5, 172.17.25.35", To: "172.17.25.35" }
+  #replace:
+  #  path: /etc/netplan/00-installer-config.yaml
+  #  after: '^nameservers:$'
+  #  regexp: '172.17.25.5, 172.17.25.35'
+  #  replace: '172.17.25.35, 172.17.25.5'
+  tags: int_chg
